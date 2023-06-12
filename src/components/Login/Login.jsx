@@ -1,0 +1,35 @@
+import React from 'react';
+import './Login.css';
+
+
+
+const Login = () => {
+  return (
+    <body>
+        <div class="wrapper">
+            <div class="form-wrapper sign-in">
+                <form action="">
+                    <h2>Login</h2>
+                    <div class="input-group">
+                        <input type="text" required />
+                        <label for="">Username</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" required />
+                        <label for="">Password</label>
+                    </div>
+                    <div class="forgot-pass">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                    <div class="sign-link">
+                        <p>Don't have an account? <a href="#" class="signUp-link">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+  )
+}
+
+export default Login
