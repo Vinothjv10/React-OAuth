@@ -151,3 +151,7 @@ h2 {
 .sign-link p a:hover {
     text-decoration: underline;
 }
+
+.btn-google{
+    margin: 5px;
+}
