@@ -1,77 +1,89 @@
-import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, {  useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    auth,
-    registerWithEmailAndPassword,
-    signInWithGoogle,
+    auth, provider,
 } from '../../firebase';
-import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
 
 const Signin = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [user, loading, error] = useAuthState(auth);
-    const navigate = useNavigate();
+    const [emailSignUp, setEmailSignUp] = useState('')
+     const [passwordSignUp, setPasswordSignUp] = useState('')
 
-    const register = () => {
-        if(!name) alert("Please Enter Name ");
-        registerWithEmailAndPassword(name, email, password);
-    };
+    const signUp = async () => {
+        try {
+            const email = emailSignUp;
+               const password = passwordSignUp;
 
-    useEffect(() =>{
-        if(loading) return;
-        if(user) navigate("/dashboard");
-    }, [user, loading]);
+               const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+               const user = userCredential.user;
 
+               setEmailSignUp("");
+               setPasswordSignUp("");
+
+               console.log(userCredential)
+
+            alert("Register Successfully");
+
+        } catch (error) {
+            const msg = error;
+            alert(msg);
+        }
+    }
+
+    const signInWithGoogle = async ()=> {
+        try {
+            const userCredential = await signInWithPopup(auth,provider);
+            console.log('userCredential : ', userCredential)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+   
   return (
-    <body>
-        <div class="wrapper">
-            <div class="form-wrapper sign-up">
+    <div className='body'>
+        <div className="wrapper">
+            <div className="form-wrapper sign-up">
                 <form action="">
                     <h2>Sign Up</h2>
-                    <div class="input-group">
+                    {/* <div className="input-group">
                         <input 
                             type="text" 
                             placeholder='Username'
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            // value={name}
+                            // onChange={(e) => setName(e.target.value)}
                             required 
                         />
-                        {/* <label for="">Username</label> */}
-                    </div>
-                    <div class="input-group">
+                        <label for="">Username</label>
+                    </div> */}
+                    <div className="input-group">
                         <input
-                            type="email"
-                            placeholder='Email'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required 
+                            type='email' 
+                            placeholder='Email' 
+                            value={emailSignUp}
+                             onChange={e => setEmailSignUp(e.target.value)} 
                         />
                         {/* <label for="">Email</label> */}
                     </div>
-                    <div class="input-group">
-                        <input 
-                            type="password" 
-                            placeholder='Password'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required 
-                        />
+                    <div className="input-group">
+                    <input 
+                        type='password' 
+                        placeholder='Password'  
+                        value={passwordSignUp} 
+                        onChange={e => setPasswordSignUp(e.target.value)} 
+                    />
                         {/* <label for="">Password</label> */}
                     </div>
-                    <button class="btn" onClick={register}>Sign Up</button>
-                    <button class=" btn btn-google" onClick={signInWithGoogle}>Signin With Google</button>
-                    <div class="sign-link">
-                        <p>Already have an account? <Link to="/" class="signIn-link">Sign In</Link></p>
+                    <button className="btn" onClick={signUp}>Sign Up</button>
+                    <button className=" btn btn-google" onClick={signInWithGoogle}>Signin With Google</button>
+                    <div className="sign-link">
+                        <p>Already have an account? <Link to="/" className="signIn-link">Sign In</Link></p>
                     </div>
                 </form>
             </div>
 
         </div>
-    </body>
+    </div>
   )
 }
 
